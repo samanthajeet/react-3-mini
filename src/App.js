@@ -31,11 +31,29 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/vehicles').then( (response) => {
+      console.log(1111, response)
+      this.setState({
+        vehiclesToDisplay: response.data
+      })
+      toast.success('yay!')
+    }).catch(error => {
+      toast.error('something went wrong fetching vehicles')
+    })
   }
 
   getPotentialBuyers() {
     // axios (GET)
     // setState with response -> buyersToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/buyers').then( (response) => {
+      console.log(333, response)
+      this.setState({
+        buyersToDisplay: response.data
+      })
+      toast.success('whoop whopp')
+    }).catch(error => {
+      toast.error('could not get buyer')
+    })
   }
 
   sellCar(id) {
@@ -48,6 +66,11 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/buyers/vehicles').then( (response) => {
+      console.log(response)
+    }).catch(error => {
+      toast.error('nope')
+    })
   }
 
   filterByColor() {
@@ -60,6 +83,16 @@ class App extends Component {
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`).then(response => {
+      console.log(2222,response)
+      this.setState({
+        vehiclesToDisplay: response.data.vehicles
+      })
+      toast.success('price updated!')
+    }).catch(err => {
+      toast.error('could not change price')
+    })
+
   }
 
   addCar() {
@@ -70,6 +103,15 @@ class App extends Component {
       year: this.year.value,
       price: this.price.value
     };
+
+    axios.post(`https://joes-autos.herokuapp.com/api/vehicles`, newCar).then( (response) => {
+      this.setState({
+        vehiclesToDisplay: response.data.vehicles
+      })
+      toast.success('added new vehicle. goo job!')
+    }).catch(err => {
+      toast.error('could not add new vehicle. boohoo')
+    })
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
@@ -84,6 +126,7 @@ class App extends Component {
 
     //axios (POST)
     // setState with response -> buyersToDisplay
+
   }
 
   deleteBuyer(id) {
@@ -100,7 +143,6 @@ class App extends Component {
 
   byYear() {
     let year = this.searchYear.value;
-
     // axios (GET)
     // setState with response -> vehiclesToDisplay
   }
